@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <title>AI SEO Audit Tool</title>
+
+  <style>
+
+    body {
+
+      font-family: Arial, sans-serif;
+
+      background: #f4f7fb;
+
+      margin: 0;
+
+      padding: 40px;
+
+    }
+
+
+    .container {
+
+      max-width: 700px;
+
+      margin: auto;
+
+      background: white;
+
+      padding: 35px;
+
+      border-radius: 15px;
+
+      box-shadow: 0 0 15px rgba(0,0,0,0.12);
+
+    }
+
+
+    h1 {
+
+      text-align: center;
+
+      color: #0b57d0;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .subtitle {
+
+      text-align: center;
+
+      color: #666;
+
+      margin-bottom: 30px;
+
+    }
+
+
+    input {
+
+      width: 100%;
+
+      padding: 14px;
+
+      font-size: 16px;
+
+      border-radius: 8px;
+
+      border: 1px solid #ccc;
+
+      box-sizing: border-box;
+
+    }
+
+
+    button {
+
+      margin-top: 18px;
+
+      width: 100%;
+
+      padding: 14px;
+
+      background: #0b57d0;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 8px;
+
+      font-size: 17px;
+
+      cursor: pointer;
+
+    }
+
+
+    button:hover {
+
+      background: #084298;
+
+    }
+
+
+    #result {
+
+      margin-top: 30px;
+
+      background: #f8f9fa;
+
+      padding: 20px;
+
+      border-radius: 10px;
+
+      min-height: 200px;
+
+      line-height: 1.6;
+
+    }
+
+
+    .loading {
+
+      text-align: center;
+
+      color: #666;
+
+    }
+
+
+    pre {
+
+      white-space: pre-wrap;
+
+      word-wrap: break-word;
+
+      font-family: Arial, sans-serif;
+
+      line-height: 1.6;
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+  <h1>AI SEO Audit Tool</h1>
+
+
+  <p class="subtitle">
+
+    Analyze any website using Gemini AI
+
+  </p>
+
+
+  <input
+
+    type="text"
+
+    id="website"
+
+    placeholder="Enter Website URL"
+
+  >
+
+
+  <button onclick="audit()">
+
+    Audit Website
+
+  </button>
+
+
+  <div id="result">
+
+    <h3>SEO Report</h3>
+
+    <p>
+
+      Enter a website URL and click "Audit Website".
+
+    </p>
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+
+function audit() {
+
+
+  const url = document
+
+    .getElementById("website")
+
+    .value
+
+    .trim();
+
+
+  if (url === "") {
+
+    alert("Please enter a website URL.");
+
+    return;
+
+  }
+
+
+  document
+
+    .getElementById("result")
+
+    .innerHTML =
+
+    '<p class="loading">Analyzing website with Gemini AI...</p>';
+
+
+  google.script.run
+
+    .withSuccessHandler(showResult)
+
+    .withFailureHandler(showError)
+
+    .auditWebsite(url);
+
+}
+
+
+function showResult(result) {
+
+
+  document
+
+    .getElementById("result")
+
+    .innerHTML =
+
+    "<h3>SEO Report</h3>" +
+
+    "<pre>" +
+
+    escapeHtml(result) +
+
+    "</pre>";
+
+}
+
+
+function showError(error) {
+
+
+  document
+
+    .getElementById("result")
+
+    .innerHTML =
+
+    "<h3>Something went wrong</h3>" +
+
+    "<p>" +
+
+    escapeHtml(error.message) +
+
+    "</p>";
+
+}
+
+
+function escapeHtml(text) {
+
+
+  return String(text)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
